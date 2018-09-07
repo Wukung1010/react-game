@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import React, {Component} from 'react';
 import Square from './Square';
 
 class Board extends Component {
@@ -28,13 +28,13 @@ class Board extends Component {
     }
     render() {
         return (
-            <div>
+            <div className="borad">
                 {
                     this.state.square.map((row, rowIndex) => (
-                        <div>
+                        <div className="row" key={rowIndex}>
                             {
                                 row.map((cell, colIndex) => (
-                                    <Square value={cell} onClick={() => {this.handleClick(rowIndex, colIndex)}}/>
+                                    <Square value={cell} onClick={() => {this.handleClick(rowIndex, colIndex)}} key={rowIndex+','+colIndex} />
                                 ))
                             }
                         </div>
