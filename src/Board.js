@@ -4,43 +4,37 @@ import Square from './Square';
 class Board extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            square: [
-                [null, null, null],
-                [null, null, null],
-                [null, null, null]
-            ]
-        };
-        this.currentPlay = 'X';
     }
-    getPlay() {
-        let cur = this.currentPlay;
-        this.currentPlay = this.currentPlay === 'X'? 'O':'X';
-        return cur;
-    }
-    handleClick(row, col) {
-        let play = this.getPlay();
-        if(this.state.square[row][col]) {
-            return ;
+    getRows() {
+        let squares = this.props.squares;
+        let rows = [];
+        for(let row = 0; row < squares.length; row += 3) {
+            let rowData = squares.slice(row, row + 3);
+            rows.push(
+                <div className="row" key={row}>
+                    {
+                        rowData.map((d, col) => this.getSquare(d, row + col))
+                    }
+                </div>
+            );
         }
-        this.state.square[row][col] = play;
-        this.setState([].concat(this.state.square));
+        return rows;
+    }
+    getSquare(val, key) {
+        return <Square value={val} onClick={() => {this.props.onClick(key)}} key={key}/>
     }
     render() {
         return (
-            <div className="borad">
+            <dir>
+                <div className="borad">
+                    {
+                        this.getRows()
+                    }
+                </div>
                 {
-                    this.state.square.map((row, rowIndex) => (
-                        <div className="row" key={rowIndex}>
-                            {
-                                row.map((cell, colIndex) => (
-                                    <Square value={cell} onClick={() => {this.handleClick(rowIndex, colIndex)}} key={rowIndex+','+colIndex} />
-                                ))
-                            }
-                        </div>
-                    ))
+                    this.props.isWin?<div>winner: {this.props.winner}</div>:null
                 }
-            </div>
+            </dir>
         );
     }
 }
